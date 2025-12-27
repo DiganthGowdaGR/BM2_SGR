@@ -38,7 +38,7 @@ export function CardSpotlightDemo({
           {/* Introduction */}
           <div className="space-y-4">
             <p className="text-lg leading-relaxed">
-              Hi, I'm <span className="text-white font-semibold">
+              Hi, I&apos;m <span className="text-white font-semibold">
                 {isClient ? (
                   <EncryptedText
                     text="Sharath Gowda GR"
