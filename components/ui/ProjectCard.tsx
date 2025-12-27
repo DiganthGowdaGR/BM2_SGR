@@ -1,8 +1,7 @@
 // ProjectCard.tsx
-import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
-import SpotlightImage from './SpotlightImage';
-
-
+import React, { useRef } from 'react';
+import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
+import SpotlightImage from "./SpotlightImage";
 
 interface ProjectCardProps {
   title: string;
@@ -19,24 +18,78 @@ export default function ProjectCard({
   imageUrl,
   techStack,
   githubUrl,
-  demoUrl
+  demoUrl,
 }: ProjectCardProps) {
-  return (
+  const overlayRef = useRef<HTMLDivElement | null>(null);
 
-    <div className="max-w-sm mx-auto bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 border border-gray-100">
+  // --- GlareHover Logic ---
+  const glareOpacity = 0.2;
+  const glareSize = 400;
+  const glareColor = '#ffffff';
+  const glareAngle = -45;
+  const transitionDuration = 650;
+
+  const hex = glareColor.replace('#', '');
+  let rgba = glareColor;
+  if (/^[\dA-Fa-f]{6}$/.test(hex)) {
+    const r = parseInt(hex.slice(0, 2), 16);
+    const g = parseInt(hex.slice(2, 4), 16);
+    const b = parseInt(hex.slice(4, 6), 16);
+    rgba = `rgba(${r}, ${g}, ${b}, ${glareOpacity})`;
+  }
+
+  const animateIn = () => {
+    const el = overlayRef.current;
+    if (!el) return;
+    el.style.transition = 'none';
+    el.style.backgroundPosition = '-100% -100%, 0 0';
+    el.style.transition = `${transitionDuration}ms ease`;
+    el.style.backgroundPosition = '100% 100%, 0 0';
+  };
+
+  const animateOut = () => {
+    const el = overlayRef.current;
+    if (!el) return;
+    el.style.transition = `${transitionDuration}ms ease`;
+    el.style.backgroundPosition = '-100% -100%, 0 0';
+  };
+
+  const overlayStyle: React.CSSProperties = {
+    position: 'absolute',
+    inset: 0,
+    background: `linear-gradient(${glareAngle}deg,
+        hsla(0,0%,0%,0) 60%,
+        ${rgba} 70%,
+        hsla(0,0%,0%,0) 100%)`,
+    backgroundSize: `${glareSize}% ${glareSize}%, 100% 100%`,
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: '-100% -100%, 0 0',
+    pointerEvents: 'none',
+    borderRadius: '1rem', // Match card's rounded-2xl
+  };
+  // --- End GlareHover Logic ---
+
+  return (
+    <div 
+      className="relative max-w-sm mx-auto bg-black/50 backdrop-blur-md rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 border border-white/20 cursor-pointer"
+      onMouseEnter={animateIn}
+      onMouseLeave={animateOut}
+    >
+      <div ref={overlayRef} style={overlayStyle} />
+      {" "}
       {/* Project Image */}
-      <div>   <SpotlightImage
-        imageUrl={imageUrl}
-        alt={title}
-        className="relative group"
-      >
-         </SpotlightImage>
-        
+      <div>
+        {" "}
+        <SpotlightImage
+          imageUrl={imageUrl}
+          alt={title}
+          className="relative group"
+        ></SpotlightImage>
         {/* Hover overlay with buttons */}
         <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <div className="flex space-x-2">
             {demoUrl && (
-              <a 
+              <a
                 href={demoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -45,7 +98,7 @@ export default function ProjectCard({
                 <FaExternalLinkAlt size={14} />
               </a>
             )}
-            <a 
+            <a
               href={githubUrl}
               target="_blank"
               rel="noopener noreferrer"
@@ -56,29 +109,28 @@ export default function ProjectCard({
           </div>
         </div>
       </div>
-
       {/* Card Content */}
       <div className="p-6">
         {/* Title */}
-        <h3 className="text-xl font-bold text-gray-800 mb-3 line-clamp-2">
+        <h3 className="text-xl font-bold text-white mb-3 line-clamp-2">
           {title}
         </h3>
 
         {/* Description */}
-        <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-3">
+        <p className="text-gray-300 text-sm leading-relaxed mb-4 line-clamp-3">
           {description}
         </p>
 
         {/* Tech Stack */}
         <div className="mb-6">
-          <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
+          <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">
             Tech Stack
           </h4>
           <div className="flex flex-wrap gap-2">
             {techStack.map((tech, index) => (
-              <span 
+              <span
                 key={index}
-                className="px-3 py-1 bg-blue-50 text-blue-600 text-xs font-medium rounded-full border border-blue-100"
+                className="px-3 py-1 bg-black-50 text-white-600 text-xs font-medium rounded-full border border-blue-100"
               >
                 {tech}
               </span>
@@ -88,7 +140,7 @@ export default function ProjectCard({
 
         {/* Action Buttons */}
         <div className="flex space-x-3">
-          <a 
+          <a
             href={githubUrl}
             target="_blank"
             rel="noopener noreferrer"
@@ -97,9 +149,9 @@ export default function ProjectCard({
             <FaGithub size={16} />
             View Code
           </a>
-          
+
           {demoUrl && (
-            <a 
+            <a
               href={demoUrl}
               target="_blank"
               rel="noopener noreferrer"

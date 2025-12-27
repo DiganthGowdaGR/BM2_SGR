@@ -1,303 +1,12 @@
 "use client";
-import React, { useRef, useEffect, useCallback } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import StyledH2 from "./StyledH2";
 import Link from "next/link";
 import { Dancing_Script } from "next/font/google";
+import AuroraShader from "./AuroraShader";
 
 const dancingScript = Dancing_Script({ subsets: ["latin"], weight: "400" });
-
-// Import the NavTab component
-// import NavTab from './NavTab';
-
-// ------------------------- LetterGlitch Background (inlined) -------------------------
-// ... (The Particle, ColorUtils, useMatrixAnimation, and LetterGlitch logic remains unchanged)
-const FONT_SIZE = 16;
-const CHAR_WIDTH = 10;
-const CHAR_HEIGHT = 20;
-const CHARACTER_SET =
-  "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*()-_{}[]:;<>,.?/";
-
-class Particle {
-  x: number;
-  y: number;
-  char: string;
-  initialColor: string;
-  currentColor: string;
-  targetColor: string;
-  colorProgress: number;
-
-  constructor(
-    x: number,
-    y: number,
-    char: string,
-    color: string,
-    targetColor: string
-  ) {
-    this.x = x;
-    this.y = y;
-    this.char = char;
-    this.initialColor = color;
-    this.currentColor = color;
-    this.targetColor = targetColor;
-    this.colorProgress = 1.0;
-  }
-
-  draw(ctx: CanvasRenderingContext2D) {
-    ctx.fillStyle = this.currentColor;
-    ctx.fillText(this.char, this.x, this.y);
-  }
-
-  randomizeCharacter() {
-    this.char = CHARACTER_SET[Math.floor(Math.random() * CHARACTER_SET.length)];
-  }
-
-  setNewTargetColor(newColor: string, smooth: boolean) {
-    if (!smooth) {
-      this.currentColor = newColor;
-      this.targetColor = newColor;
-      this.colorProgress = 1.0;
-    } else {
-      this.initialColor = this.currentColor;
-      this.targetColor = newColor;
-      this.colorProgress = 0.0;
-    }
-  }
-
-  updateColorTransition(): boolean {
-    if (this.colorProgress >= 1) return false;
-    this.colorProgress = Math.min(this.colorProgress + 0.05, 1);
-    const start = ColorUtils.hexToRgb(this.initialColor);
-    const end = ColorUtils.hexToRgb(this.targetColor);
-    if (start && end) {
-      this.currentColor = ColorUtils.interpolateRgb(
-        start,
-        end,
-        this.colorProgress
-      );
-    }
-    return true;
-  }
-}
-
-interface RgbColor {
-  r: number;
-  g: number;
-  b: number;
-}
-const ColorUtils = {
-  hexToRgb(hex: string): RgbColor | null {
-    if (!hex || hex.charAt(0) !== "#") return null;
-    const cleanHex = hex.substring(1);
-    const fullHex =
-      cleanHex.length === 3
-        ? cleanHex
-            .split("")
-            .map((c: string) => c + c)
-            .join("")
-        : cleanHex;
-    if (fullHex.length !== 6) return null;
-    return {
-      r: parseInt(fullHex.substring(0, 2), 16),
-      g: parseInt(fullHex.substring(2, 4), 16),
-      b: parseInt(fullHex.substring(4, 6), 16),
-    };
-  },
-  interpolateRgb(start: RgbColor, end: RgbColor, factor: number): string {
-    const r = Math.round(start.r + (end.r - start.r) * factor);
-    const g = Math.round(start.g + (end.g - start.g) * factor);
-    const b = Math.round(start.b + (end.b - start.b) * factor);
-    return `rgb(${r}, ${g}, ${b})`;
-  },
-  getRandomColor(colors: string[]): string {
-    return colors[Math.floor(Math.random() * colors.length)];
-  },
-};
-
-interface AnimationOptions {
-  colors?: string[];
-  speed?: number;
-  smooth?: boolean;
-}
-const useMatrixAnimation = (
-  canvasRef: React.RefObject<HTMLCanvasElement>,
-  options: AnimationOptions,
-  getContainerSize: () => { width: number; height: number }
-) => {
-  const {
-    colors = ["#2b4539", "#61dca3", "#61b3dc"],
-    speed = 50,
-    smooth = true,
-  } = options;
-  const particlesRef = useRef<Particle[]>([]);
-  const animationFrameId = useRef<number | null>(null);
-  const lastUpdateTime = useRef<number>(0);
-  const contextRef = useRef<CanvasRenderingContext2D | null>(null);
-  const getRandomColorMemoized = useCallback(
-    () => ColorUtils.getRandomColor(colors),
-    [colors]
-  );
-
-  useEffect(() => {
-    const canvas = canvasRef.current!;
-    const context = canvas.getContext("2d", {
-      willReadFrequently: true,
-    })!;
-    contextRef.current = context;
-    const grid = { cols: 0, rows: 0 };
-
-    const setup = (width: number, height: number) => {
-      const dpr = window.devicePixelRatio || 1;
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
-      canvas.style.width = `${width}px`;
-      canvas.style.height = `${height}px`;
-      context.setTransform(dpr, 0, 0, dpr, 0, 0);
-      context.font = `${FONT_SIZE}px monospace`;
-      context.textBaseline = "top";
-      grid.cols = Math.ceil(width / CHAR_WIDTH);
-      grid.rows = Math.ceil(height / CHAR_HEIGHT);
-      particlesRef.current = [];
-      for (let row = 0; row < grid.rows; row++) {
-        for (let col = 0; col < grid.cols; col++) {
-          const x = col * CHAR_WIDTH;
-          const y = row * CHAR_HEIGHT;
-          const char =
-            CHARACTER_SET[Math.floor(Math.random() * CHARACTER_SET.length)];
-          const color = getRandomColorMemoized();
-          const targetColor = getRandomColorMemoized();
-          particlesRef.current.push(
-            new Particle(x, y, char, color, targetColor)
-          );
-        }
-      }
-    };
-
-    const animate = (timestamp: number) => {
-      let needsRedraw = false;
-      const elapsed = timestamp - lastUpdateTime.current;
-      if (elapsed > speed) {
-        const updateCount = Math.max(
-          1,
-          Math.floor(particlesRef.current.length * 0.05)
-        );
-        for (let i = 0; i < updateCount; i++) {
-          const index = Math.floor(Math.random() * particlesRef.current.length);
-          const particle = particlesRef.current[index];
-          if (particle) {
-            particle.randomizeCharacter();
-            particle.setNewTargetColor(getRandomColorMemoized(), smooth);
-          }
-        }
-        lastUpdateTime.current = timestamp;
-        needsRedraw = true;
-      }
-      if (smooth) {
-        particlesRef.current.forEach((p) => {
-          if (p.updateColorTransition()) needsRedraw = true;
-        });
-      }
-      if (needsRedraw) {
-        const canvasWidth = canvas.width / (window.devicePixelRatio || 1);
-        const canvasHeight = canvas.height / (window.devicePixelRatio || 1);
-        context.clearRect(0, 0, canvasWidth, canvasHeight);
-        particlesRef.current.forEach((p) => p.draw(context));
-      }
-      animationFrameId.current = requestAnimationFrame(animate);
-    };
-
-    const { width, height } = getContainerSize();
-    setup(width, height);
-
-    window.addEventListener("resize", () => setup(width, height));
-
-    // set lastUpdateTime so the first frame can run immediately
-    lastUpdateTime.current =
-      performance && performance.now && performance.now()
-        ? performance.now() - speed - 1
-        : 0;
-    animationFrameId.current = requestAnimationFrame(animate);
-
-    return () => {
-      if (animationFrameId.current)
-        cancelAnimationFrame(animationFrameId.current);
-      window.removeEventListener("resize", () => setup(width, height));
-    };
-  }, [
-    colors,
-    speed,
-    smooth,
-    canvasRef,
-    getRandomColorMemoized,
-    getContainerSize,
-  ]);
-};
-
-interface LetterGlitchProps {
-  glitchColors?: string[];
-  glitchSpeed?: number;
-  smooth?: boolean;
-  centerVignette?: boolean;
-  outerVignette?: boolean;
-  className?: string;
-}
-
-const LetterGlitch = ({
-  glitchColors,
-  glitchSpeed,
-  smooth,
-  centerVignette = false,
-  outerVignette = true,
-  className,
-}: LetterGlitchProps) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const getContainerSize = useCallback(() => {
-    if (containerRef.current) {
-      return {
-        width: containerRef.current.offsetWidth,
-        height: containerRef.current.offsetHeight,
-      };
-    }
-    return { width: 0, height: 0 };
-  }, []);
-
-  useMatrixAnimation(
-    canvasRef as React.RefObject<HTMLCanvasElement>,
-    { colors: glitchColors, speed: glitchSpeed, smooth },
-    getContainerSize
-  );
-
-  return (
-    // keep background in normal stacking context (z-0) so it stays behind the card but not under the page
-    <div 
-      ref={containerRef}
-      className={`absolute inset-0 z-0 overflow-hidden ${className}` }
-    >
-      <canvas ref={canvasRef} className="block w-full h-full" />
-      {/* soften vignette so characters remain visible */}
-      {outerVignette && (
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background:
-              "radial-gradient(circle, rgba(0,0,0,0) 60%, rgba(0,0,0,0.45) 100%)",
-          }}
-        />
-      )}
-      {centerVignette && (
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background:
-              "radial-gradient(circle, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 60%)",
-          }}
-        />
-      )}
-    </div>
-  );
-};
 
 // ------------------------- Portfolio Component -------------------------
 const LinkedInIcon = () => (
@@ -341,34 +50,14 @@ const CustomIcon = () => (
 );
 
 export default function Portfolio2WithBg() {
-  const glitchColors = [
-    "#32a852",
-    "#4287f5",
-    "#d942f5",
-    "#f54242",
-    "#f5e342",
-    "#42f5f5",
-    "#f5a142",
-  ];
   return (
-    // FIX 1: Use min-h-screen for full browser height flexing
-    <div className="w-full min-h-screen flex items-center justify-center font-sans relative overflow-hidden bg-black text-white p-4">
-      {/* LetterGlitch background */}
-      <LetterGlitch
-        glitchColors={glitchColors}
-        glitchSpeed={50}
-        smooth={true}
-        outerVignette={true}
-        centerVignette={false}
+    <div className="w-full h-full flex items-center justify-center font-sans relative overflow-hidden bg-black text-white p-4">
+      <AuroraShader
+        colorStops={["#1e40af", "#be185d", "#1e3a8a"]}
+        amplitude={0.8}
+        blend={0.4}
+        speed={0.5}
       />
-
-      {/* FIX 2: RENDER AND POSITION THE NAVTAB 
-        - Positioned absolutely to the top center.
-        - High z-index (z-50) to sit above the glitch effect (z-0) and the profile card (z-10).
-      */}
-      {/* <div className="absolute top-4 md:top-6 left-1/2 transform -translate-x-1/2 z-50">
-          <NavTab onTabChange={(tab) => console.log('Navigating to', tab)} />
-      </div> */}
 
       {/* Content card - Design is NOT changed */}
       <div className="relative w-full max-w-4xl p-6 md:p-10 rounded-2xl border border-white/10 bg-black/70 backdrop-blur-sm shadow-2xl z-10">
@@ -411,7 +100,7 @@ export default function Portfolio2WithBg() {
                 </button>
               </Link>
 
-              <Link href="https://drive.google.com/file/d/1fy3MOzBU4IkWDWHaSnoolgUnpsAXmTHi/view?usp=drive_link">
+              <Link href="https://drive.google.com/file/d/1fy3MOzBU4IkWDWHaSnoolgUnpsAXmTHi/view?usp=drive_link" target="_blank" rel="noopener noreferrer">
                 <button className="mt-8 inline-block px-8 py-3 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20 transition">
                   CV
                 </button>
@@ -446,7 +135,7 @@ export default function Portfolio2WithBg() {
               }}
             >
               <img
-                src="https://i.pinimg.com/736x/3c/a0/23/3ca023b594a47949e4664190d0c30e1a.jpg"
+                src="profile/sharath2.jpg"
                 alt="Profile"
                 className="w-full h-full object-cover rounded-full transition-transform duration-200"
               />
@@ -459,12 +148,14 @@ export default function Portfolio2WithBg() {
             <a
               href="https://www.linkedin.com/in/sharath-gowda-g-r-372832281/"
               className="hover:text-white transition"
+              target="_blank" rel="noopener noreferrer"
             >
               {LinkedInIcon()}
             </a>
             <a
               href="https://github.com/DiganthGowdaGR"
               className="hover:text-white transition"
+              target="_blank" rel="noopener noreferrer"
             >
               {GithubIcon()}
             </a>

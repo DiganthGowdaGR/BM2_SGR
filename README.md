@@ -1,17 +1,24 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio | Sharath Gowda GR
 
-## Getting Started
+A high-performance, interactive portfolio designed for a modern web presence. Built with **Next.js**, **TypeScript**, and **Framer Motion**.
 
-First, run the development server:
+## 🛠 Tech Stack
+
+- **Core:** Next.js 14 (App Router), React, TypeScript
+- **Styling:** Tailwind CSS, Aceternity UI
+- **Animation:** Framer Motion, GLSL Shaders (Aurora Effect)
+
+##  Key Features
+
+- **Immersive UI:** Aurora background shader & glassmorphism.
+- **Interactive Components:** Apple-style project carousel & spotlight cards.
+- **Hacker Aesthetics:** Encrypted text reveal animations.
+- **Performance:** Fully responsive & optimized.
+
+##  Quick Start
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
