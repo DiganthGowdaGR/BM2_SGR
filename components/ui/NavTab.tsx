@@ -3,7 +3,7 @@ import { FaUser, FaFolderOpen, FaBlog, FaEnvelope } from 'react-icons/fa';
 
 const NavTab: React.FC = () => {
   return (
-    <nav className="flex justify-around gap-4 items-center px-4 py-1 bg-black/20 backdrop-blur-md rounded-[15px] ring-1 ring-white/20">
+    <nav className="flex justify-around gap-4 items-center px-4 py-1 bg-transparent rounded-[15px] ring-1 ring-white/20">
       <a href="#about" className="relative group hover:cursor-pointer hover:bg-slate-800 p-2 rounded-full transition-all duration-500">
         <FaUser size={20} color="white" />
         <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-max px-2 py-1 text-white bg-black rounded-md opacity-0 transform scale-90 transition-all duration-300 group-hover:opacity-100 group-hover:scale-100">
