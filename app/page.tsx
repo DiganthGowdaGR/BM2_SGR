@@ -30,7 +30,7 @@ export default function Page() {
         {/* "About" section is now first */}
         <motion.section
           id="profile"
-          className="h-[100dvh] snap-start flex items-center justify-center"
+          className="min-h-[100dvh] snap-start flex items-center justify-center pt-20 md:pt-0"
           initial="initial"
           whileInView="animate"
           viewport={{ once: true, amount: 0.3 }}
@@ -41,7 +41,7 @@ export default function Page() {
         </motion.section>
         <motion.section
           id="about"
-          className="h-[100dvh] snap-start flex items-center justify-center"
+          className="min-h-[100dvh] snap-start flex items-center justify-center pt-20 md:pt-0"
           initial="initial"
           whileInView="animate"
           viewport={{ once: true, amount: 0.3 }}
@@ -52,7 +52,7 @@ export default function Page() {
         </motion.section>
         <motion.section
           id="project"
-          className="h-[100dvh] snap-start flex items-center justify-center"
+          className="min-h-[100dvh] snap-start flex items-center justify-center pt-20 md:pt-0"
           initial="initial"
           whileInView="animate"
           viewport={{ once: true, amount: 0.3 }}
@@ -61,7 +61,7 @@ export default function Page() {
         >
           <AppleCardsCarouselDemo />
         </motion.section>
-        <motion.section id="contact" className="h-[100dvh] snap-start relative flex items-center justify-center">
+        <motion.section id="contact" className="min-h-[100dvh] snap-start relative flex items-center justify-center pt-20 md:pt-0">
           <Contact />
         </motion.section>
       </main>

@@ -60,7 +60,7 @@ export default function Portfolio2WithBg() {
       />
 
       {/* Content card - Design is NOT changed */}
-      <div className="relative w-full max-w-4xl p-6 md:p-10 rounded-2xl border border-white/10 bg-black/70 backdrop-blur-sm shadow-2xl z-10">
+      <div className="relative w-full max-w-4xl p-4 md:p-10 rounded-2xl border border-white/10 bg-black/70 backdrop-blur-sm shadow-2xl z-10">
         <main className="flex flex-col md:flex-row items-center justify-between gap-8 py-6 px-4">
           <div className="text-left md:w-1/2">
             {/* Animated gray-white gradient name */}
@@ -95,20 +95,20 @@ export default function Portfolio2WithBg() {
 
             <div className="flex">
               <Link href="/contact">
-                <button className="mt-8 mr-4 inline-block px-8 py-3 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20 transition">
+                <button className="mt-4 md:mt-8 mr-4 inline-block px-8 py-3 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20 transition">
                   Let&apos;s Talk
                 </button>
               </Link>
 
               <Link href="https://drive.google.com/file/d/1fy3MOzBU4IkWDWHaSnoolgUnpsAXmTHi/view?usp=drive_link" target="_blank" rel="noopener noreferrer">
-                <button className="mt-8 inline-block px-8 py-3 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20 transition">
+                <button className="mt-4 md:mt-8 inline-block px-8 py-3 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20 transition">
                   CV
                 </button>
               </Link>
             </div>
           </div>
 
-          <div className="relative w-56 h-56 sm:w-64 sm:h-64 md:w-80 md:h-80 flex-shrink-0 ">
+          <div className="relative w-40 h-40 sm:w-64 sm:h-64 md:w-80 md:h-80 flex-shrink-0 ">
             <div
               className="w-full h-full overflow-hidden shadow-xl rounded-full border-2 border-white/10 transition-transform duration-200 ease-out hover:scale-110 "
               style={{

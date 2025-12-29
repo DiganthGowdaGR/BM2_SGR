@@ -38,9 +38,9 @@ const socialLinks: SocialLink[] = [
 
 const SocialLinks = () => {
   return (
-    <div className="backdrop-blur-xl bg-gradient-card rounded-3xl p-8 border border-border shadow-card">
-      <h3 className="text-2xl font-bold text-white mb-6 text-center lg:text-left">Connect With Me</h3>
-      <p className="text-muted-foreground mb-8 text-center lg:text-left">
+    <div className="backdrop-blur-xl bg-gradient-card rounded-3xl p-6 md:p-8 border border-border shadow-card">
+      <h3 className="text-2xl font-bold text-white mb-0 text-center lg:text-left">Connect With Me</h3>
+      <p className="text-muted-foreground mb-4 md:mb-8 text-center lg:text-left">
         Find me on these platforms or send a direct email
       </p>
 
@@ -76,7 +76,7 @@ const SocialLinks = () => {
       </div>
 
       {/* Additional Contact Info */}
-      <div className="mt-8 pt-8 border-t border-border space-y-4">
+      <div className="mt-4 pt-4 md:mt-8 md:pt-8 border-t border-border space-y-4">
         <div>
           <p className="text-sm font-medium text-muted-foreground mb-1">Email</p>
           <a
