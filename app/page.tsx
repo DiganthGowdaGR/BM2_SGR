@@ -6,7 +6,7 @@ import ProfileCard from '@/components/ui/ProfileCard';
 import Contact from '@/components/ui/Contact';
 import { CardSpotlightDemo } from '@/components/ui/AboutText';
 import { AppleCardsCarouselDemo } from '@/components/ui/ProjectSection';
-import { Particles } from '@/components/ui/particles';
+import { Particles } from '@/components/ui/Particles';
 
 export default function Page() {
   const mainRef = useRef<HTMLElement | null>(null);
