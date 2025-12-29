@@ -6,6 +6,7 @@ import ProfileCard from '@/components/ui/ProfileCard';
 import Contact from '@/components/ui/Contact';
 import { CardSpotlightDemo } from '@/components/ui/AboutText';
 import { AppleCardsCarouselDemo } from '@/components/ui/ProjectSection';
+import { Particles } from '@/components/ui/particles';
 
 export default function Page() {
   const mainRef = useRef<HTMLElement | null>(null);
@@ -23,14 +24,23 @@ export default function Page() {
 
   return (
     <div className="h-[100dvh] flex flex-col items-center bg-black dark:bg-black text-white overflow-hidden">
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <Particles
+          className="absolute inset-0"
+          quantity={100}
+          ease={80}
+          color="#ffffff"
+          refresh
+        />
+      </div>
       <div className="fixed top-4 z-50">
         <NavTab />
       </div>
-      <main ref={mainRef} className="w-full h-full overflow-y-auto snap-y snap-mandatory no-scrollbar">
+      <main ref={mainRef} className="w-full h-full overflow-y-auto scroll-smooth no-scrollbar relative z-10">
         {/* "About" section is now first */}
         <motion.section
           id="profile"
-          className="min-h-[100dvh] snap-start flex items-center justify-center pt-20 md:pt-0"
+          className="min-h-[100dvh] flex items-center justify-center pt-20 md:pt-0"
           initial="initial"
           whileInView="animate"
           viewport={{ once: true, amount: 0.3 }}
@@ -41,7 +51,7 @@ export default function Page() {
         </motion.section>
         <motion.section
           id="about"
-          className="min-h-[100dvh] snap-start flex items-center justify-center pt-20 md:pt-0"
+          className="min-h-[100dvh] flex items-center justify-center pt-20 md:pt-0"
           initial="initial"
           whileInView="animate"
           viewport={{ once: true, amount: 0.3 }}
@@ -52,7 +62,7 @@ export default function Page() {
         </motion.section>
         <motion.section
           id="project"
-          className="min-h-[100dvh] snap-start flex items-center justify-center pt-20 md:pt-0"
+          className="min-h-[100dvh] flex items-center justify-center pt-20 md:pt-0"
           initial="initial"
           whileInView="animate"
           viewport={{ once: true, amount: 0.3 }}
@@ -61,7 +71,7 @@ export default function Page() {
         >
           <AppleCardsCarouselDemo />
         </motion.section>
-        <motion.section id="contact" className="min-h-[100dvh] snap-start relative flex items-center justify-center pt-20 md:pt-0">
+        <motion.section id="contact" className="min-h-[100dvh] relative flex items-center justify-center pt-20 md:pt-0">
           <Contact />
         </motion.section>
       </main>
