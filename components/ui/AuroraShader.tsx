@@ -178,6 +178,5 @@ export default function AuroraShader({
       gl.getExtension("WEBGL_lose_context")?.loseContext();
     };
   }, [amplitude, blend, colorStops, speed]);
-
   return <div ref={containerRef} className="w-full h-full absolute bottom-0" />;
 }

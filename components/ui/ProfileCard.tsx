@@ -51,7 +51,7 @@ const CustomIcon = () => (
 
 export default function Portfolio2WithBg() {
   return (
-    <div className="w-full h-full flex items-center justify-center font-sans relative overflow-hidden bg-black text-white p-4">
+    <div className="w-full h-full flex items-center justify-center font-sans relative overflow-hidden bg-black text-white p-20">
       <AuroraShader
         colorStops={["#1e40af", "#be185d", "#1e3a8a"]}
         amplitude={0.8}
