@@ -1,6 +1,23 @@
 "use client";
 
 import React from "react";
+
+export function AppleCardsCarouselDemo() {
+  return (
+    <div className="w-full py-8 md:py-20 text-center">
+      <h2 className="max-w-5xl mx-auto text-3xl md:text-5xl font-bold text-neutral-800 dark:text-neutral-200 font-sans">
+        Projects coming soon
+      </h2>
+      <p className="mt-4 text-neutral-600 dark:text-neutral-300 text-base md:text-lg">
+        I am polishing my build notes and will share them here shortly. Stay tuned!
+      </p>
+    </div>
+  );
+}
+
+/*
+Previous project carousel implementation retained for future use.
+
 import { Carousel, Card } from "@/components/ui/apple-cards-carousel";
 
 interface CardData {
@@ -95,3 +112,4 @@ const data: CardData[] = [
     content: <DummyContent />,
   },
 ];
+*/
