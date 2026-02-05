@@ -33,14 +33,16 @@ export default function Page() {
           refresh
         />
       </div>
-      <div className="fixed top-4 z-50">
+      <div className="fixed top-2 sm:top-4 z-50">
         <NavTab />
       </div>
       <main ref={mainRef} className="w-full h-full overflow-y-auto scroll-smooth no-scrollbar relative z-10">
+        {/* Spacer to clear fixed NavTab */}
+        <div className="h-14 sm:h-16" />
         {/* "About" section is now first */}
         <motion.section
           id="profile"
-          className="min-h-[100dvh] flex items-center justify-center pt-20 md:pt-0"
+          className="min-h-[100dvh] flex items-start justify-center pt-0"
           initial="initial"
           whileInView="animate"
           viewport={{ once: true, amount: 0.3 }}

@@ -18,7 +18,7 @@ export function CardSpotlightDemo({ className = "" }) {
 
   return (
     <CardSpotlight
-      className={`w-full max-w-xl sm:max-w-2xl md:max-w-3xl lg:max-w-4xl h-auto min-h-[28rem] ${className}`}
+      className={`w-full max-w-xl sm:max-w-2xl md:max-w-3xl lg:max-w-4xl h-auto min-h-[28rem] mx-4 sm:mx-0 ${className}`}
       color="#3b82f6" // Custom spotlight color
     >
       <div
