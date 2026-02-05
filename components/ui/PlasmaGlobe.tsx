@@ -314,10 +314,9 @@ export default function PlasmaGlobe({
 
     return (
         <div
-            ref={containerRef}
-            className="w-full h-full absolute inset-0 pointer-events-none 
-            !rounded-xl !bg-transparent"
-            style={{ transform: "scale(0.80)", borderRadius: '50px' }} // 0.75 = 75%
+          ref={containerRef}
+          className="w-full h-full absolute inset-0 pointer-events-none !rounded-xl !bg-transparent"
+          style={{ transform: "scale(0.86)", borderRadius: "9999px" }}
         />
 
     );

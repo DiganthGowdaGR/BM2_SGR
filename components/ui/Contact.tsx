@@ -24,7 +24,7 @@ const Contact = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="relative w-full h-full flex items-center justify-center"
+            className="relative w-full max-w-xl mx-auto aspect-square min-h-[260px] sm:min-h-[320px] flex items-center justify-center"
           >
             <PlasmaGlobe intensity={0.6} speed={0.5} />
           </motion.div>
